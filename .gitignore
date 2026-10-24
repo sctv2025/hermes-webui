@@ -19,6 +19,8 @@ archive/
 !.env.docker.example
 .claude/
 CLAUDE.md
+# 共通AI憲法の同期対象（2026-10-24 T-054: 追跡化のため ignore を解除）
+!CLAUDE.md
 AGENTS.local.md
 .cursorrules
 .windsurfrules
