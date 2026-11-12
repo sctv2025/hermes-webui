@@ -1,11 +1,11 @@
 # Agent instructions for Hermes WebUI
 
 
-<!-- ═══ BEGIN COMMON CONSTITUTION v3 (自動同期・手編集禁止 — 原本: ~/Antigravity/_constitution/CONSTITUTION.md) ═══ -->
+<!-- ═══ BEGIN COMMON CONSTITUTION v4 (自動同期・手編集禁止 — 原本: ~/Antigravity/_constitution/CONSTITUTION.md) ═══ -->
 # 共通AI憲法 (Common AI Constitution)
 
-- **version: 3** （整数。改定ごとに +1 する）
-- **改定日: 2026-11-09**
+- **version: 4** （整数。改定ごとに +1 する）
+- **改定日: 2026-11-12**
 
 ## 改定履歴
 
@@ -14,6 +14,7 @@
 | 1 | 2026-07-10 | 初版制定（T-054）。ai-history-kb/AGENTS.md §1〜§4・§10 を要約・普遍化 |
 | 2 | 2026-10-24 | Blackbox AI 倒産（全額返金・先生確認）により全リストから除外 |
 | 3 | 2026-11-09 | C-1 に「やったことは、正確にやったと報告せよ」を追記（報告の正確性・日付をまたぐ事象は絶対時刻で） |
+| 4 | 2026-11-12 | C-6 に共有Honcho等のPII出口規制を追記、C-7「優柔不断のオーケストレーション方針（司令塔=Carbon・副司令官=Codex）」を新設 |
 
 ---
 
@@ -59,6 +60,14 @@
 1. PII（個人識別情報）・APIキー・トークン等の秘密情報は**絶対に commit しない**。
 2. PII を含む可能性のあるファイルを commit する前は、必ず開発者に確認せよ。
 3. PII を外部API（クラウドLLM等）へ送信してはならない。
+4. **PIIの「出口」規制（共有Honcho混在禁止）**: ローカルHoncho（`127.0.0.1:8000` / `:3000/mcp`）自体はマシン内完結であっても、それを読み取るエージェントがクラウドLLM（Carbon / Codex / Claude / OpenRouter等）である場合、引き出した記憶はクラウドへ送信される。したがって園児情報・診療文脈・患者情報・氏名・連絡先等のPIIは通常の共有ワークスペース（`Hermes` / `default`）には絶対に書き込まず混在させない。PII検出時は即座に作業を止めて開発者へ確認を求め、Ollama等のローカルLLM隔離レーンのみで完結させること。
+
+## C-7 優柔不断のオーケストレーション方針
+
+1. **現時点の指揮系統（2026-11-12時点）**: 司令塔（Commander）は **Antigravity（Gemini 4 Carbon）**、副司令官（Sub-commander：監査・計画検証・セカンドオピニオン・並列実装）は **Codex** とする。Hermes・Claude・Cursor・VS Code・Gemini CLI・ローカルLLM（Ollama）は用途・契約枠に応じた併走部隊として連携する。
+2. **司令官の非固定とグレーゾーン保護**: モデル性能や利用条件（サブスク枠 vs API従量課金枠）の変化に応じ、司令塔・副司令官の座は将来も柔軟に入れ替える（「臨機応変・優柔不断」を正式な設計原則とする）。比較検討中・移行期のグレーな状態を、AIが勝手に白黒断定して恒久決定のように要約・上書きする「悪のpipeline」を禁じ、未確定事項は「暫定・試行中」ラベル付きで記録する。
+3. **正史（Source of Truth）の4階層序列**: ①本憲法およびAntigravity常時適用憲法 ＞ ②各リポジトリの実コード・Git履歴・`HANDOVER.md` ＞ ③ローカルHoncho（API `http://127.0.0.1:8000` / MCP `http://127.0.0.1:3000/mcp`、旧クラウド `app.honcho.dev` は廃止済） ＞ ④各エージェント固有の内蔵メモリ（`MEMORY.md` 等。ここに全体方針の正史を持たせず、上位と矛盾する場合は上位に従う）。
+4. **Honcho書き込み非対称性への対処**: 毎ターン自動保存は Hermes のみであり、Carbon・Codex・Claude 等は MCP 明示呼び出し型である。Carbon や Codex で方針決定・方針転換・仮採用を行った節目では必ず Honcho に明示記録し、別エージェントへ切り替えた初手では Honcho で直近経緯を確認すること。
 
 ---
 
